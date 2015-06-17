@@ -13,14 +13,18 @@ configure do
 end
 
 get '/' do
+  # jobs = `sweatshop job-list`.split "\n"
   # html = File.read "#{__dir__}/index.html"
   # eruby = Erubis::Eruby.new html
-  # jobs = `sweatshop job-list`.split "\n"
   # context = {jobs: jobs}
   # return eruby.result(context)
 end
 
-get '/:log' do
-  return 404 unless settings.valid_logs.include? params[:log]
-  File.read "#{settings.logfile_path}/#{params[:log]}.log"
+get '/:process' do
+  status 404 unless settings.valid_logs.include? params[:process]
+  contents = File.read "#{settings.logfile_path}/#{params[:process]}.log"
+  html = File.read "#{__dir__}/log.html.erb"
+  eruby = Erubis::Eruby.new html
+  context = { process: params[:process], log: contents }
+  eruby.result(context)
 end
