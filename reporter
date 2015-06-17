@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+require 'sinatra'
+require 'erubis'
+require 'yaml'
+
+configure do
+  config_path = File.expand_path '~/.robot_sweatshop/compiled_config.yaml'
+  config = YAML.load_file(config_path)
+  set :port, ARGV[0] || 8082
+  set :bind, config[:http_bind]
+  set :logfile_path, config[:logfile_path]
+  set :valid_logs, %w(input conveyor assembler job-dictionary payload-parser worker eye)
+end
+
+get '/' do
+  # html = File.read "#{__dir__}/index.html"
+  # eruby = Erubis::Eruby.new html
+  # jobs = `sweatshop job-list`.split "\n"
+  # context = {jobs: jobs}
+  # return eruby.result(context)
+end
+
+get '/:log' do
+  return 404 unless settings.valid_logs.include? params[:log]
+  File.read "#{settings.logfile_path}/#{params[:log]}.log"
+end
