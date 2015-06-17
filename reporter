@@ -13,11 +13,10 @@ configure do
 end
 
 get '/' do
-  # jobs = `sweatshop job-list`.split "\n"
-  # html = File.read "#{__dir__}/index.html"
-  # eruby = Erubis::Eruby.new html
-  # context = {jobs: jobs}
-  # return eruby.result(context)
+  html = File.read "#{__dir__}/index.html.erb"
+  eruby = Erubis::Eruby.new html
+  context = { logs: settings.valid_logs }
+  eruby.result context
 end
 
 get '/:process' do
@@ -26,5 +25,5 @@ get '/:process' do
   html = File.read "#{__dir__}/log.html.erb"
   eruby = Erubis::Eruby.new html
   context = { process: params[:process], log: contents }
-  eruby.result(context)
+  eruby.result context
 end

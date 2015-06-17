@@ -3,24 +3,14 @@
 <head>
     <meta charset="UTF-8" />
     <title>Robot Sweatshop's Reporter</title>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script>
-      var QueueJob = function() {
-        var job = $('select#job').val();
-        var data = $('textarea#data').val();
-        console.log('queuejob - '+"http://localhost:8080/run/"+job+" - "+data);
-        $.post("http://localhost:8080/run/"+job, data);
-      }
-    </script>
 </head>
 
 <body>
-  <select id="job">
-    <% for job in jobs %>
-    <option value="<%= job %>"><%= job %></option>
-    <% end %>
-  </select>
-  <textarea id="data">{}</textarea>
-  <button type="button" onclick="QueueJob()">Queue Job</button>
+  <h1>Log Index</h1>
+  <ul>
+  <% for log in logs %>
+    <li><a href="<%= log %>"><%= log %></a></li>
+  <% end %>
+  </ul>
 </body>
 </html>
